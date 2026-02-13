@@ -1,0 +1,24 @@
+package com.cengiz.crm.enums;
+
+public enum Industry {
+    TECHNOLOGY,
+    FINANCE,
+    HEALTHCARE,
+    RETAIL,
+    MANUFACTURING,
+    EDUCATION,
+    REAL_ESTATE,
+    TELECOMMUNICATIONS,
+    AUTOMOTIVE,
+    ENERGY,
+    MEDIA,
+    HOSPITALITY,
+    TRANSPORTATION,
+    AGRICULTURE,
+    CONSTRUCTION,
+    CONSULTING,
+    LEGAL,
+    GOVERNMENT,
+    NON_PROFIT,
+    OTHER
+}

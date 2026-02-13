@@ -1,0 +1,29 @@
+[Unit]
+Description=Enterprise CRM Application
+After=syslog.target network.target postgresql.service redis.service
+
+[Service]
+Type=simple
+User=crm
+Group=crm
+
+WorkingDirectory=/opt/crm
+ExecStart=/usr/bin/java -Xms512m -Xmx1024m -XX:+UseG1GC -Dspring.profiles.active=prod -jar /opt/crm/enterprise-crm.jar
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=crm
+
+Restart=always
+RestartSec=10
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Environment variables
+Environment="SPRING_PROFILE=prod"
+Environment="SERVER_PORT=8080"
+
+[Install]
+WantedBy=multi-user.target
