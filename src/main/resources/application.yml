@@ -185,7 +185,7 @@ spring:
       max-lifetime: 1800000
   
   redis:
-    host: 185.136.206.32
+    host: localhost
     port: 6379
     password: ${REDIS_PASSWORD:}
     timeout: 3000
