@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::title}, ~{::section}, 'leads')}">
+
+<head>
+    <title>Potansiyel Müşteriler - Kurumsal CRM</title>
+</head>
+
+<body>
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Potansiyel Müşteriler</h2>
+            <a href="/crm/leads/new" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Yeni Potansiyel
+            </a>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}">Başarılı</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}">Hata</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">Ad Soyad</th>
+                                <th>Şirket & Ünvan</th>
+                                <th>İletişim</th>
+                                <th>Kaynak</th>
+                                <th>Durum</th>
+                                <th class="text-end pe-4">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(leads)}">
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                    Henüz kayıtlı potansiyel müşteri bulunmuyor.
+                                </td>
+                            </tr>
+                            <tr th:each="lead : ${leads}">
+                                <td class="ps-4">
+                                    <div class="fw-bold" th:text="${lead.fullName}">Ad Soyad</div>
+                                    <small class="text-muted"
+                                        th:text="${#temporals.format(lead.createdAt, 'dd MMM yyyy')}">Tarih</small>
+                                </td>
+                                <td>
+                                    <div th:text="${lead.companyName}">Şirket</div>
+                                    <small class="text-muted" th:text="${lead.jobTitle}">Ünvan</small>
+                                </td>
+                                <td>
+                                    <div th:if="${lead.email}">
+                                        <i class="bi bi-envelope text-muted me-1"></i>
+                                        <a th:href="'mailto:' + ${lead.email}" th:text="${lead.email}"
+                                            class="text-decoration-none">email</a>
+                                    </div>
+                                    <div th:if="${lead.phone}">
+                                        <i class="bi bi-telephone text-muted me-1"></i>
+                                        <span th:text="${lead.phone}">telefon</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border" th:text="${lead.source}">Kaynak</span>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        th:classappend="${lead.status == T(com.cengiz.crm.enums.LeadStatus).NEW ? 'bg-info' : 
+                                                          (lead.status == T(com.cengiz.crm.enums.LeadStatus).QUALIFIED ? 'bg-success' : 
+                                                          (lead.status == T(com.cengiz.crm.enums.LeadStatus).LOST ? 'bg-danger' : 'bg-secondary'))}"
+                                        th:text="${lead.status}">Durum</span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group">
+                                        <a th:href="@{/crm/leads/edit/{id}(id=${lead.id})}"
+                                            class="btn btn-sm btn-outline-primary" title="Düzenle">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a th:href="@{/crm/leads/delete/{id}(id=${lead.id})}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Bu kaydı silmek istediğinizden emin misiniz?')"
+                                            title="Sil">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white py-3">
+                <small class="text-muted" th:text="'Toplam ' + ${#lists.size(leads)} + ' kayıt listelendi.'">Toplam
+                    kayıt</small>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

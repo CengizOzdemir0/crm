@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(~{::title}, ~{::section}, 'leads')}">
+
+<head>
+    <title th:text="${lead.id == null ? 'Yeni Potansiyel' : 'Potansiyel Düzenle'} + ' - Kurumsal CRM'">Lead Formu
+    </title>
+</head>
+
+<body>
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 th:text="${lead.id == null ? 'Yeni Potansiyel Ekle' : 'Potansiyel Düzenle'}">Lead Formu</h2>
+            <a href="/crm/leads" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <form th:action="@{/crm/leads/save}" th:object="${lead}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:field="*{version}" />
+                    <input type="hidden" th:if="${lead.id != null}" th:field="*{createdAt}" />
+
+                    <div class="row g-3">
+                        <!-- Temel Bilgiler -->
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">Kişi Bilgileri</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">Ad *</label>
+                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}"
+                                th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                                th:errors="*{firstName}">
+                                Hata
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Soyad *</label>
+                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}"
+                                th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}"
+                                th:errors="*{lastName}">
+                                Hata
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="companyName" class="form-label">Şirket Adı</label>
+                            <input type="text" class="form-control" id="companyName" th:field="*{companyName}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="jobTitle" class="form-label">Ünvan</label>
+                            <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}">
+                        </div>
+
+                        <!-- Durum ve Kaynak -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3">Durum ve Kaynak</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="status" class="form-label">Durum *</label>
+                            <select class="form-select" id="status" th:field="*{status}" required>
+                                <option th:each="status : ${leadStatuses}" th:value="${status}" th:text="${status}">
+                                    Durum</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="source" class="form-label">Kaynak</label>
+                            <select class="form-select" id="source" th:field="*{source}">
+                                <option value="" selected>Seçiniz...</option>
+                                <option th:each="source : ${leadSources}" th:value="${source}" th:text="${source}">
+                                    Kaynak</option>
+                            </select>
+                        </div>
+
+                        <!-- İletişim -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3">İletişim</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">E-posta</label>
+                            <input type="email" class="form-control" id="email" th:field="*{email}"
+                                th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                Hata
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Telefon</label>
+                            <input type="text" class="form-control" id="phone" th:field="*{phone}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label">Cep Telefonu</label>
+                            <input type="text" class="form-control" id="mobile" th:field="*{mobile}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="website" class="form-label">Web Sitesi</label>
+                            <input type="url" class="form-control" id="website" th:field="*{website}"
+                                placeholder="https://">
+                        </div>
+
+                        <!-- Adres -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3">Adres</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="address" class="form-label">Adres</label>
+                            <textarea class="form-control" id="address" th:field="*{address}" rows="2"></textarea>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="city" class="form-label">Şehir</label>
+                            <input type="text" class="form-control" id="city" th:field="*{city}">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">İlçe/Eyalet</label>
+                            <input type="text" class="form-control" id="state" th:field="*{state}">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="country" class="form-label">Ülke</label>
+                            <input type="text" class="form-control" id="country" th:field="*{country}">
+                        </div>
+
+                        <!-- Notlar -->
+                        <div class="col-12 mt-4">
+                            <h5 class="border-bottom pb-2 mb-3">Diğer</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="notes" class="form-label">Notlar</label>
+                            <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
+                        </div>
+
+                        <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                            <a href="/crm/leads" class="btn btn-light border">İptal</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
