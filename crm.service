@@ -8,7 +8,7 @@ User=crm
 Group=crm
 
 WorkingDirectory=/opt/crm
-ExecStart=/usr/bin/java -Xms512m -Xmx1024m -XX:+UseG1GC -Dspring.profiles.active=prod -jar /opt/crm/enterprise-crm.jar
+ExecStart=/usr/bin/java -Xms512m -Xmx1024m -XX:+UseG1GC -Dspring.profiles.active=prod -jar /opt/crm/target/enterprise-crm.jar
 
 StandardOutput=journal
 StandardError=journal
