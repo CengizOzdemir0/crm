@@ -4,8 +4,8 @@ After=syslog.target network.target postgresql.service redis.service
 
 [Service]
 Type=simple
-User=crm
-Group=crm
+User=root
+Group=root
 
 WorkingDirectory=/opt/crm
 ExecStart=/usr/bin/java -Xms512m -Xmx1024m -XX:+UseG1GC -Dspring.profiles.active=prod -jar /opt/crm/target/enterprise-crm.jar
