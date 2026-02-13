@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Özel Giriş Başarı İşleyicisi
  * Giriş bilgilerini kaydeder ve gösterge paneline yönlendirir
  * 
  * @author Cengiz
  */
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
